@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+    <title>Netcab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .has-error {
+            border: 2px solid #e60000;
+        }
+        .city, .cab, .navbar {display:none;}
+        .cab {margin-top:75px}
+        .affix {
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+
+        .affix {
+            padding-top: 5px;
+        }
+        .w3-overlay {z-index: 4}
+
+        .w3-container {padding: 0;}
+        /* Always set the map height explicitly to define the size of the div
+      * element that contains the map. */
+        #map {
+            min-height: 300px;
+        }
+
+        /* Center the loader */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 9999;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 } 
+            to { bottom:0px; opacity:1 }
+        }
+
+        @keyframes animatebottom { 
+            from{ bottom:-100px; opacity:0 } 
+            to{ bottom:0; opacity:1 }
+        }
+        #myProgress {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: #ddd;
+        }
+
+        #myBar {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #4CAF50;
+        }
+
+        #label {
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+       <nav class="w3-sidenav w3-light-grey w3-animate-left" style="display:none;z-index:5" id="mySidenav">
+            <div class="w3-container w3-theme-d2">
+
+                <div class="w3-padding w3-center">
+                    <img class="w3-circle" src="img/avatar.png" alt="avatar" style="width:75%">
+                </div>
+            </div>
+            <!--span onclick="w3_close()"
+                      class="w3-closenav w3-large">Close &times;</span-->
+
+            <h4 style="text-align: center;"><span class="center" id="lbl_username"></span></h4>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+            <a href="#" class="link icon-only open-panel"><span class="glyphicon glyphicon-question-sign"></span> Help</a>
+            <a href="#" onclick="Logout()"><span class="glyphicon glyphicon-off"></span>Log Out</a>
+        </nav>
+        <div id="loader"></div>
+        <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+        <div class="w3-container">
+
+
+            <div id="auth-email" class="w3-container w3-border city">
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+                </div>
+                <button type="button" class="btn btn-primary" id="auth-email" onclick="authentication(this.id)">Continue</button>
+            </div>
+
+            <div id="auth-code" class="w3-container w3-border city">
+                <div class="form-group">
+                    <label for="code">Code:</label>
+                    <input type="text" class="form-control" id="code">
+                </div>
+                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-email');">Back</button>
+                <button type="button" class="btn btn-primary" id="auth-code" onclick="authentication(this.id)">Continue</button>
+            </div>
+
+            <div id="auth-signup" class="w3-container w3-border city">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control" id="phone">
+                </div>
+                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-code');">Back</button>
+                <button type="button" class="btn btn-primary" id="auth-signup" onclick="authentication(this.id)">Continue</button>
+            </div>
+
+            <div id="auth-login" class="w3-container w3-border city">
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd">
+                </div><a href="#" onclick="$('#rpwd').slideToggle()">Forgot password</a><br>
+                <div class="form-group" id="rpwd" style='display:none'>
+                    <label for="rspw">Reset password:</label><br>
+                    <button id='rspw' type="button" id="auth-reset" class="btn btn-primary">Reset password</button>
+                </div>
+                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-signup');">Back</button>
+                <button type="button" class="btn btn-primary" id="auth-login" onclick="authentication(this.id)">Continue</button>
+
+            </div>
+
+            <div id="get-a-cab" class="w3-container">
+                <nav class="navbar navbar-inverse" data-spy="affix" >
+                    <ul class="w3-navbar w3-black  w3-card-4 w3-theme">
+                        <li style="float: left; width: 15% !important;"><span class="w3-opennav w3-xxlarge" onclick="w3_open()">&#9776;</span></li>
+                        <li style="float: left; width: 25% !important;"><a href="javascript:void(0)" id="btn_bk" class="cablink" onclick="openCity(this.id, 'cab_booking');">Booking</a></li>
+                        <li style="float: left; width: 20% !important;"><a href="javascript:void(0)" id="btn_pr" class="cablink" onclick="openCity(this.id, 'cab-prices');">Prices</a></li>
+                        <li style="float: left; width: 34% !important;"><a href="javascript:void(0)" id="btn_co" class="cablink" onclick="openCity(this.id, 'cab_confirmation');">Confirmation</a></li>
+                    </ul>
+                </nav>
+                <div id="cab_booking" class="w3-container w3-border cab">
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button"  onclick="getLocation()">
+                                <span class="glyphicon glyphicon-map-marker"></span></button>
+                        </span>
+                        <input id="from" type="text" class="form-control" placeholder="Pick you up from..." value='' onFocus="geolocate()">
+                    </div><!-- /input-group -->
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <span class="glyphicon glyphicon-flag"></span></button>
+                        </span>
+                        <input id="destination" type="text" class="form-control" placeholder="Destination..." value=''>
+                    </div><!-- /input-group -->
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" >
+                                <span class="glyphicon glyphicon-map-marker"></span></button>
+                        </span>
+                        <input id="pdate" type="date" class="form-control" placeholder="Pick you up from" value=''>
+                    </div><!-- /input-group -->
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" >
+                                <span class="glyphicon glyphicon-map-marker"></span></button>
+                        </span>
+                        <input id="ptime" type="time" class="form-control" placeholder="Pick you up from" value=''>
+                    </div><!-- /input-group -->
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" >
+                                        <span class="glyphicon glyphicon-dashboard"></span></button>
+                                </span>
+                                <input id="distance" type="text" class="form-control"placeholder="Distance..." value=''>
+                            </div><!-- /input-group -->
+                        </div>
+                        <div class="col-xs-6">    
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" >
+                                        <span class="glyphicon glyphicon-time"></span></button>
+                                </span>
+                                <input id="duration" type="text" class="form-control" placeholder="Duration..." value=''>
+                            </div><!-- /input-group -->
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" id="btn_route" onclick="validateRoute()">Submit</button>
+                    <div id="map" >     
+                    </div>
+                </div>
+
+
+                <div id="cab-prices" class="w3-container w3-border cab">
+                    <table class="table table-striped">
+                        <tr><th>Cab</th><th>$</th><th>Get</th></tr>
+                    </table>
+                </div>
+
+                <div id="cab-confirmation" class="w3-container w3-border cab">
+
+                    <div class="container" id="boxMsg">
+
+                    </div>
+                    <div id="myProgress"><div id="myBar"><div id="label">100sec</div></div></div></div>
+            </div>
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="modal_title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal_msg"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+   
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+	<script>
+        function openCity(tab, cityName) {
+            var i, x, tablinks;
+            var section = cityName.substr(0, 3);
+            if (section == "cab") {
+                x = document.getElementsByClassName("cab");
+                tablinks = document.getElementsByClassName("cablink");
+                for (i = 0; i < x.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+                }
+                if (tab != '')
+                    $("#" + tab).addClass(" w3-red");
+
+            } else {
+                x = document.getElementsByClassName("city");
+                tablinks = document.getElementsByClassName("tablink");
+            }
+
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(cityName).style.display = "block";
+        }
+    </script>
+    <script>
+        function w3_open() {
+            document.getElementById("mySidenav").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+        function w3_close() {
+            document.getElementById("mySidenav").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+        //loader
+        function showLoader() {
+            document.getElementById("myOverlay").style.display = "block";
+            document.getElementById("loader").style.display = "block";
+        }
+        function showPage() {
+            document.getElementById("myOverlay").style.display = "none";
+            document.getElementById("loader").style.display = "none";
+        }
+        showLoader();
+
+        function displayModal(title, msg) {
+            $("#modal_title").text(title);
+            $("#modal_msg").text(msg);
+            $("#myModal").modal();
+        }
+
+    </script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYphJNuZgJT6oV5Uru3davK5Rv0dIIWJs&libraries=places" async defer></script>
+
+    <script type="text/javascript">
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+        }
+    </script>    
+   
+    <script src="netcab.js"></script> 
+    <script src="js/validations.js"></script> 
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "XXXXXXX",
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        }
+    },
+    "dependent_plugins": {}
+}
