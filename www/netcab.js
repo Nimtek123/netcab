@@ -135,7 +135,7 @@ function checkCookie() {
 }
 
 function authentication(fieldID) {
-
+    showLoader();
     var VARstring = '';
     var fieldVal = $("#" + fieldID).val();
     var allok = true;
@@ -174,7 +174,7 @@ function authentication(fieldID) {
         VARstring = "&email=" + userEmail;
 
     if (allok) {
-        /*$.ajax({
+        $.ajax({
          type: "POST",
          url: hostserver+'api/authentication.php',
          data: VARstring,
@@ -184,11 +184,10 @@ function authentication(fieldID) {
          var userData = response.split("_");
          var success = userData[1];
          
-         $("#WaitingGif").hide();*/
         var success = 'y';
         if (success == 'y')
         {
-            var valData = 'nimrod';//userData[2];
+            var valData = userData[2];
 
             if (fieldID == 'auth-email') {
                 setCookie('email', valData, 365);
@@ -215,11 +214,11 @@ function authentication(fieldID) {
             } else
                 openCity('', fieldID);
         }
-        /*
+        
          },
          dataType: "JSON"
          });
-         $("#WaitingGif").hide();*/
+         showPage();
     }
 
 }
