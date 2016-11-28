@@ -128,7 +128,7 @@ function checkCookie() {
     } else {
         $("#cab_booking").css("display", "block");
         $(".navbar").show();
-        openCity('', 'get-a-cab');
+        openCity('btn_bk', 'get-a-cab');
         getLocation();
     }
 
@@ -140,6 +140,8 @@ function authentication(fieldID) {
     var fieldVal = '';
     var allok = true;
     var phoneVal = '';
+    userEmail = getCookie("email");
+    userEmail = window.localStorage.getItem("email");
     
     if (userEmail != '' && userEmail != null)
         VARstring = "&email=" + userEmail+'&';
@@ -184,11 +186,11 @@ function authentication(fieldID) {
          var response = r;
          var userData = response.split("_");
          var success = userData[0];
-         
+         var valData = userData[1];
+         var usrname = userData[2];
 
         if (success == 'y')
         {
-            var valData = userData[1];
             
             if (fieldID == 'auth-email') {
                 setCookie('email', valData, 365);
@@ -203,17 +205,26 @@ function authentication(fieldID) {
             } else if (fieldID == 'auth-reset') {
                 openCity('', 'code');
             } else if (fieldID == 'auth-login') {
-                setCookie('status', 'logged', 365);
-                window.localStorage.setItem("status", 'logged');
-                openCity('btn_bk', 'get-a-cab');
+                setCookie('status', valData, 365);
+                window.localStorage.setItem("status", valData);
+                setCookie('username', usrname, 365);
+                window.localStorage.setItem("username", usrname);
+                //openCity('btn_bk', 'get-a-cab');
+                location.reload();
             }
-        } else if (success == 's'){
+        } 
+        else if (success == 's'){
             if (fieldID == 'auth-email') {
                 setCookie('email', valData, 365);
                 window.localStorage.setItem("email", valData);
                 openCity('', 'auth-login');
-            } else
-                openCity('', fieldID);
+            }
+        }
+        else {
+                var msg = "There is a problem with your login details! Please try again";
+                    var title = "Authentication Error!";
+                    displayModal(title, msg);
+            openCity('', fieldID);
         }
         
          },
