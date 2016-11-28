@@ -112,7 +112,7 @@ function checkCookie() {
     userName = getCookie("username");
     userID = getCookie("userID");
     userEmail = getCookie("email");
-    if (userName == '')
+    if (userEmail == '')
     {
         userName = window.localStorage.getItem("username");
         userID = window.localStorage.getItem("userID");
@@ -137,42 +137,43 @@ function checkCookie() {
 function authentication(fieldID) {
     showLoader();
     var VARstring = '';
-    var fieldVal = $("#" + fieldID).val();
+    var fieldVal = '';
     var allok = true;
     var phoneVal = '';
+    
+    if (userEmail != '' && userEmail != null)
+        VARstring = "&email=" + userEmail+'&';
 
     if (fieldID == 'auth-email') {
         if (!validEmail('email'))
             allok = false;
-        VARstring = "email=" + fieldVal;
+        VARstring = "email=" + $('#email').val();
 
     } else if (fieldID == 'auth-code') {
-        if (!validNum('code'))
+        if (!validText('code'))
             allok = false;
-        VARstring = "code=" + fieldVal;
+        VARstring += "code=" + $('#code').val();
     } else if (fieldID == 'auth-login') {
         if (!validText('pwd'))
             allok = false;
-        VARstring = "pwd=" + fieldVal;
+        VARstring += "pwd=" + $('#pwd').val();
     } else if (fieldID == 'auth-reset') {
         if (getCookie("email") != '')
             fieldVal = getCookie("email");
         else if (window.localStorage.getItem("email") != '')
             fieldVal = getCookie("email");
-        VARstring = "resetpw=" + fieldVal;
+        VARstring += "resetpw=" + 'reset';
         if (fieldVal == '')
             allok = false;
     } else if (fieldID == 'auth-signup') {
-        if (!validTelno('phone'))
+        if (!validTelno('phone')) 
             allok = false;
         phoneVal = $("#phone").val().replace(/&/g, "#") + "\n";
-        if (validText('username'))
+        if (!validText('username'))
             allok = false;
-        VARstring = "username=" + fieldVal + "&phone=" + phoneVal;
+        VARstring += "username=" + $('#username').val() + "&phone=" + phoneVal;
     }
-    if (userEmail != '')
-        VARstring = "&email=" + userEmail;
-
+    
     if (allok) {
         $.ajax({
          type: "POST",
@@ -182,17 +183,17 @@ function authentication(fieldID) {
          {
          var response = r;
          var userData = response.split("_");
-         var success = userData[1];
+         var success = userData[0];
          
-        var success = 'y';
+
         if (success == 'y')
         {
-            var valData = userData[2];
-
+            var valData = userData[1];
+            
             if (fieldID == 'auth-email') {
                 setCookie('email', valData, 365);
                 window.localStorage.setItem("email", valData);
-                openCity('', 'auth-login');
+                openCity('', 'auth-signup');
             } else if (fieldID == 'auth-code') {
                 openCity('', 'auth-login');
             } else if (fieldID == 'auth-signup') {
@@ -206,21 +207,21 @@ function authentication(fieldID) {
                 window.localStorage.setItem("status", 'logged');
                 openCity('btn_bk', 'get-a-cab');
             }
-        } else {
+        } else if (success == 's'){
             if (fieldID == 'auth-email') {
                 setCookie('email', valData, 365);
                 window.localStorage.setItem("email", valData);
-                openCity('', 'auth-signup');
+                openCity('', 'auth-login');
             } else
                 openCity('', fieldID);
         }
         
          },
-         dataType: "JSON"
+         dataType: "HTML"
          });
-         showPage();
+         
     }
-
+showPage();
 }
 
 function Logout()
