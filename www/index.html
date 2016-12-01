@@ -99,184 +99,185 @@
 </head>
 
 <body>
-       <nav class="w3-sidenav w3-light-grey w3-animate-left" style="display:none;z-index:5" id="mySidenav">
-            <div class="w3-container w3-theme-d2">
+    <nav class="w3-sidenav w3-light-grey w3-animate-left" style="display:none;z-index:5" id="mySidenav">
+        <div class="w3-container w3-theme-d2">
 
-                <div class="w3-padding w3-center">
-                    <img class="w3-circle" src="img/avatar.png" alt="avatar" style="width:75%">
-                </div>
+            <div class="w3-padding w3-center">
+                <img class="w3-circle" src="img/avatar.png" alt="avatar" style="width:75%">
             </div>
-            <!--span onclick="w3_close()"
-                      class="w3-closenav w3-large">Close &times;</span-->
+        </div>
+        <!--span onclick="w3_close()"
+                  class="w3-closenav w3-large">Close &times;</span-->
 
-            <h4 style="text-align: center;"><span class="center" id="lbl_username"></span></h4>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
-            <a href="#" class="link icon-only open-panel"><span class="glyphicon glyphicon-question-sign"></span> Help</a>
-            <a href="#" onclick="Logout()"><span class="glyphicon glyphicon-off"></span>Log Out</a>
-        </nav>
-        <div id="loader"></div>
-        <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
-        <div class="w3-container">
+        <h4 style="text-align: center;"><span class="center" id="lbl_username"></span></h4>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+        <a href="#" class="link icon-only open-panel"><span class="glyphicon glyphicon-question-sign"></span> Help</a>
+        <a href="#" onclick="Logout()"><span class="glyphicon glyphicon-off"></span>Log Out</a>
+        <p id="gckey"></p>
+    </nav>
+    <div id="loader"></div>
+    <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+    <div class="w3-container">
 
 
-            <div id="auth-email" class="w3-container w3-border city">
+        <div id="auth-email" class="w3-container w3-border city">
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+            </div>
+            <button type="button" class="btn btn-primary" id="auth-email" onclick="authentication(this.id)">Continue</button>
+        </div>
+
+        <div id="auth-code" class="w3-container w3-border city">
+            <div class="form-group">
+                <label for="code">Code:</label>
+                <input type="text" class="form-control" id="code">
+            </div>
+            <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-email');">Back</button>
+            <button type="button" class="btn btn-primary" id="auth-code" onclick="authentication(this.id)">Continue</button>
+        </div>
+
+        <div id="auth-signup" class="w3-container w3-border city">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone">
+            </div>
+            <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-code');">Back</button>
+            <button type="button" class="btn btn-primary" id="auth-signup" onclick="authentication(this.id)">Continue</button>
+        </div>
+
+        <div id="auth-login" class="w3-container w3-border city">
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" id="pwd">
+            </div><a href="#" onclick="$('#rpwd').slideToggle()">Forgot password</a><br>
+            <div class="form-group" id="rpwd" style='display:none'>
+                <label for="rspw">Reset password:</label><br>
+                <button id='rspw' type="button" id="auth-reset" class="btn btn-primary">Reset password</button>
+            </div>
+            <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-signup');">Back</button>
+            <button type="button" class="btn btn-primary" id="auth-login" onclick="authentication(this.id)">Continue</button>
+
+        </div>
+
+        <div id="get-a-cab" class="w3-container">
+            <nav class="navbar navbar-inverse" data-spy="affix" >
+                <ul class="w3-navbar w3-black  w3-card-4 w3-theme">
+                    <li style="float: left; width: 15% !important;"><span class="w3-opennav w3-xxlarge" onclick="w3_open()">&#9776;</span></li>
+                    <li style="float: left; width: 25% !important;"><a href="javascript:void(0)" id="btn_bk" class="cablink" onclick="openCity(this.id, 'cab_booking');">Booking</a></li>
+                    <li style="float: left; width: 20% !important;"><a href="javascript:void(0)" id="btn_pr" class="cablink" onclick="openCity(this.id, 'cab-prices');">Prices</a></li>
+                    <li style="float: left; width: 34% !important;"><a href="javascript:void(0)" id="btn_co" class="cablink" onclick="openCity(this.id, 'cab_confirmation');">Confirmation</a></li>
+                </ul>
+            </nav>
+            <div id="cab_booking" class="w3-container w3-border cab">
 
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    <input id="email" type="text" class="form-control" name="email" placeholder="Email">
-                </div>
-                <button type="button" class="btn btn-primary" id="auth-email" onclick="authentication(this.id)">Continue</button>
-            </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button"  onclick="getLocation()">
+                            <span class="glyphicon glyphicon-map-marker"></span></button>
+                    </span>
+                    <input id="from" type="text" class="form-control" placeholder="Pick you up from..." value='' onFocus="geolocate()">
+                </div><!-- /input-group -->
 
-            <div id="auth-code" class="w3-container w3-border city">
-                <div class="form-group">
-                    <label for="code">Code:</label>
-                    <input type="text" class="form-control" id="code">
-                </div>
-                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-email');">Back</button>
-                <button type="button" class="btn btn-primary" id="auth-code" onclick="authentication(this.id)">Continue</button>
-            </div>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <span class="glyphicon glyphicon-flag"></span></button>
+                    </span>
+                    <input id="destination" type="text" class="form-control" placeholder="Destination..." value=''>
+                </div><!-- /input-group -->
 
-            <div id="auth-signup" class="w3-container w3-border city">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" class="form-control" id="username">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="text" class="form-control" id="phone">
-                </div>
-                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-code');">Back</button>
-                <button type="button" class="btn btn-primary" id="auth-signup" onclick="authentication(this.id)">Continue</button>
-            </div>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" >
+                            <span class="glyphicon glyphicon-map-marker"></span></button>
+                    </span>
+                    <input id="pdate" type="date" class="form-control" placeholder="Pick you up from" value=''>
+                </div><!-- /input-group -->
 
-            <div id="auth-login" class="w3-container w3-border city">
-                <div class="form-group">
-                    <label for="pwd">Password:</label>
-                    <input type="password" class="form-control" id="pwd">
-                </div><a href="#" onclick="$('#rpwd').slideToggle()">Forgot password</a><br>
-                <div class="form-group" id="rpwd" style='display:none'>
-                    <label for="rspw">Reset password:</label><br>
-                    <button id='rspw' type="button" id="auth-reset" class="btn btn-primary">Reset password</button>
-                </div>
-                <button type="button" class="btn btn-default" onclick="openCity(event, 'auth-signup');">Back</button>
-                <button type="button" class="btn btn-primary" id="auth-login" onclick="authentication(this.id)">Continue</button>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" >
+                            <span class="glyphicon glyphicon-map-marker"></span></button>
+                    </span>
+                    <input id="ptime" type="time" class="form-control" placeholder="Pick you up from" value=''>
+                </div><!-- /input-group -->
 
-            </div>
-
-            <div id="get-a-cab" class="w3-container">
-                <nav class="navbar navbar-inverse" data-spy="affix" >
-                    <ul class="w3-navbar w3-black  w3-card-4 w3-theme">
-                        <li style="float: left; width: 15% !important;"><span class="w3-opennav w3-xxlarge" onclick="w3_open()">&#9776;</span></li>
-                        <li style="float: left; width: 25% !important;"><a href="javascript:void(0)" id="btn_bk" class="cablink" onclick="openCity(this.id, 'cab_booking');">Booking</a></li>
-                        <li style="float: left; width: 20% !important;"><a href="javascript:void(0)" id="btn_pr" class="cablink" onclick="openCity(this.id, 'cab-prices');">Prices</a></li>
-                        <li style="float: left; width: 34% !important;"><a href="javascript:void(0)" id="btn_co" class="cablink" onclick="openCity(this.id, 'cab_confirmation');">Confirmation</a></li>
-                    </ul>
-                </nav>
-                <div id="cab_booking" class="w3-container w3-border cab">
-
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button"  onclick="getLocation()">
-                                <span class="glyphicon glyphicon-map-marker"></span></button>
-                        </span>
-                        <input id="from" type="text" class="form-control" placeholder="Pick you up from..." value='' onFocus="geolocate()">
-                    </div><!-- /input-group -->
-
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button">
-                                <span class="glyphicon glyphicon-flag"></span></button>
-                        </span>
-                        <input id="destination" type="text" class="form-control" placeholder="Destination..." value=''>
-                    </div><!-- /input-group -->
-
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" >
-                                <span class="glyphicon glyphicon-map-marker"></span></button>
-                        </span>
-                        <input id="pdate" type="date" class="form-control" placeholder="Pick you up from" value=''>
-                    </div><!-- /input-group -->
-
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" >
-                                <span class="glyphicon glyphicon-map-marker"></span></button>
-                        </span>
-                        <input id="ptime" type="time" class="form-control" placeholder="Pick you up from" value=''>
-                    </div><!-- /input-group -->
-
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" >
-                                        <span class="glyphicon glyphicon-dashboard"></span></button>
-                                </span>
-                                <input id="distance" type="text" class="form-control"placeholder="Distance..." value=''>
-                            </div><!-- /input-group -->
-                        </div>
-                        <div class="col-xs-6">    
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" >
-                                        <span class="glyphicon glyphicon-time"></span></button>
-                                </span>
-                                <input id="duration" type="text" class="form-control" placeholder="Duration..." value=''>
-                            </div><!-- /input-group -->
-                        </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" >
+                                    <span class="glyphicon glyphicon-dashboard"></span></button>
+                            </span>
+                            <input id="distance" type="text" class="form-control"placeholder="Distance..." value=''>
+                        </div><!-- /input-group -->
                     </div>
-
-                    <button type="button" class="btn btn-primary" id="btn_route" onclick="validateRoute()">Submit</button>
-                    <div id="map" >     
+                    <div class="col-xs-6">    
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" >
+                                    <span class="glyphicon glyphicon-time"></span></button>
+                            </span>
+                            <input id="duration" type="text" class="form-control" placeholder="Duration..." value=''>
+                        </div><!-- /input-group -->
                     </div>
                 </div>
 
-
-                <div id="cab-prices" class="w3-container w3-border cab">
-                    <table class="table table-striped">
-                        <tr><th>Cab</th><th>$</th><th>Get</th></tr>
-                    </table>
+                <button type="button" class="btn btn-primary" id="btn_route" onclick="validateRoute()">Submit</button>
+                <div id="map" >     
                 </div>
+            </div>
 
-                <div id="cab-confirmation" class="w3-container w3-border cab">
 
-                    <div class="container" id="boxMsg">
+            <div id="cab-prices" class="w3-container w3-border cab">
+                <table class="table table-striped">
+                    <tr><th>Cab</th><th>$</th><th>Get</th></tr>
+                </table>
+            </div>
 
-                    </div>
-                    <div id="myProgress"><div id="myBar"><div id="label">100sec</div></div></div></div>
+            <div id="cab-confirmation" class="w3-container w3-border cab">
+
+                <div class="container" id="boxMsg">
+
+                </div>
+                <div id="myProgress"><div id="myBar"><div id="label">100sec</div></div></div></div>
+        </div>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="modal_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p id="modal_msg"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
 
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
+    </div>
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title" id="modal_title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <p id="modal_msg"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-   
-
+    <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        app.initialize();
+                    app.initialize();
     </script>
-	<script>
+    <script>
         function openCity(tab, cityName) {
             var i, x, tablinks;
             var section = cityName.substr(0, 3);
@@ -340,7 +341,7 @@
                     'Error: Your browser doesn\'t support geolocation.');
         }
     </script>    
-   
+
     <script src="netcab.js"></script> 
     <script src="js/validations.js"></script> 
 </body>
