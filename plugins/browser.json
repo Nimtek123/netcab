@@ -22,6 +22,33 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-battery-status": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "org.myapp.sample"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "org.myapp.sample"
         }
     },
     "dependent_plugins": {}

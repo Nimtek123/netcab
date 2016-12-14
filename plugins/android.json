@@ -1,0 +1,80 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-battery-status": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-contacts": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "1034784861416",
+            "PACKAGE_NAME": "com.pushapp"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.pushapp"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.pushapp"
+        }
+    }
+}

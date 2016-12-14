@@ -1,0 +1,3 @@
+e8rvgQRlqTo:APA91bE6YRh2916gN5CFJ609rqvXpJTfe_v3zboHJ-YSDkNXCt4DctbyBjqbX_oGqPCOjE4ZfaOTa6q7j801nq5Gp-2aau8onxj19cKIlC2Tsep0L06COMSegOgSNyY38sStxsIrjNMy
+
+phonegap push --deviceID e8rvgQRlqTo:APA91bE6YRh2916gN5CFJ609rqvXpJTfe_v3zboHJ-YSDkNXCt4DctbyBjqbX_oGqPCOjE4ZfaOTa6q7j801nq5Gp-2aau8onxj19cKIlC2Tsep0L06COMSegOgSNyY38sStxsIrjNMy --service gcm --payload "{ \"data\": { \"title\": \"Hello\", \"message\": \"World\"} }"
